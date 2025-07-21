@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillTree - Interactive Learning Roadmap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tree"></i>
+                    <h1>SkillTree</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="saveBtn">
+                        <i class="fas fa-save"></i> Save Progress
+                    </button>
+                    <button class="btn btn-secondary" id="loadBtn">
+                        <i class="fas fa-upload"></i> Load Progress
+                    </button>
+                    <button class="btn btn-primary" id="addSkillBtn">
+                        <i class="fas fa-plus"></i> Add Skill
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <aside class="sidebar">
+                <div class="pomodoro-top-bar">
+                    <div class="pomodoro-timer-box">
+                        <button class="pomodoro-settings-icon" id="pomodoroSettingsBtn" title="Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <span id="pomodoroTimeBox">25:00</span>
+                        <div class="pomodoro-timer-actions">
+                            <button class="btn btn-outline" id="pomodoroStart">Start</button>
+                            <button class="btn btn-outline" id="pomodoroReset">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="pomodoro-settings-box" id="pomodoroSettingsBox">
+                    <h3>Pomodoro Settings</h3>
+                    <div class="pomodoro-settings">
+                        <label>Work Time:
+                            <input type="number" id="workTimeInput" min="1" max="60" value="25"> min
+                        </label>
+                        <label>Break Time:
+                            <input type="number" id="breakTimeInput" min="1" max="30" value="5"> min
+                        </label>
+                        <button class="btn btn-outline" id="pomodoroApply">Apply</button>
+                    </div>
+                </div>
+                <div class="progress-overview">
+                    <h3>Progress Overview</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalSkills">0</div>
+                            <div class="stat-label">Skills</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="completedMilestones">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="progressPercentage">0%</div>
+                            <div class="stat-label">Progress</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar"></div>
+                    </div>
+                </div>
+                <div class="skill-list">
+                    <h3>Skills Overview</h3>
+                    <div id="skillsList" class="skills-container">
+                    </div>
+                </div>
+            </aside>
+            <section class="tree-container">
+                <div class="tree-header">
+                    <h2>Your Learning Journey</h2>
+                    <p>Click on milestones to mark them complete, and watch your skill tree grow!</p>
+                </div>
+                <div class="tree-canvas" id="treeCanvas">
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3>Start Your Learning Journey</h3>
+                        <p>Add your first skill to begin growing your knowledge tree</p>
+                        <button class="btn btn-primary" onclick="openAddSkillModal()">
+                            <i class="fas fa-plus"></i> Add Your First Skill
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add New Skill</h3>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addSkillForm">
+                    <div class="form-group">
+                        <label for="skillName">Skill Name</label>
+                        <input type="text" id="skillName" placeholder="e.g., JavaScript Fundamentals" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="skillDescription">Description</label>
+                        <textarea id="skillDescription" placeholder="Brief description of this skill..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="skillCategory">Category</label>
+                        <select id="skillCategory">
+                            <option value="programming">Programming</option>
+                            <option value="design">Design</option>
+                            <option value="data">Data Science</option>
+                            <option value="business">Business</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Milestones</label>
+                        <div id="milestonesContainer">
+                            <div class="milestone-input">
+                                <input type="text" placeholder="e.g., Learn Variables and Data Types" class="milestone-name">
+                                <button type="button" class="remove-milestone" onclick="app.removeMilestone(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline" onclick="app.addMilestone()">
+                            <i class="fas fa-plus"></i> Add Milestone
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" form="addSkillForm" class="btn btn-primary">Add Skill</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="skillDetailModal">
+        <div class="modal modal-large">
+            <div class="modal-header">
+                <h3 id="skillDetailTitle">Skill Details</h3>
+                <button class="close-btn" onclick="closeSkillDetail()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="skillDetailContent">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
