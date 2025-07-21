@@ -1,17 +1,23 @@
+// make skilltree app
 class SkillTreeApp {
     constructor() {
+        // list of skills
         this.skills = [];
+        // next id for skills
         this.nextId = 1;
+        // skill positions in tree
         this.currentSkillPositions = new Map();
         this.init();
     }
 
+    // start app
     init() {
         this.bindEvents();
         this.loadFromStorage();
         this.render();
     }
 
+    // set up buttons and events
     bindEvents() {
         document.getElementById('addSkillBtn').addEventListener('click', () => this.openAddSkillModal());
         document.getElementById('saveBtn').addEventListener('click', () => this.saveToFile());
@@ -26,20 +32,24 @@ class SkillTreeApp {
         this.addMilestone();
     }
 
+    // show add skill box
     openAddSkillModal() {
         document.getElementById('modalOverlay').classList.add('active');
         document.getElementById('skillName').focus();
     }
 
+    // close add skill box
     closeModal() {
         document.getElementById('modalOverlay').classList.remove('active');
         this.resetForm();
     }
 
+    // close skill detail box
     closeSkillDetail() {
         document.getElementById('skillDetailModal').classList.remove('active');
     }
 
+    // clear form
     resetForm() {
         document.getElementById('addSkillForm').reset();
         const container = document.getElementById('milestonesContainer');
@@ -47,6 +57,7 @@ class SkillTreeApp {
         this.addMilestone();
     }
 
+    // add milestone input
     addMilestone() {
         const container = document.getElementById('milestonesContainer');
         const milestoneDiv = document.createElement('div');
@@ -60,6 +71,7 @@ class SkillTreeApp {
         container.appendChild(milestoneDiv);
     }
 
+    // remove milestone input
     removeMilestone(button) {
         const container = document.getElementById('milestonesContainer');
         if (container.children.length > 1) {
@@ -67,6 +79,7 @@ class SkillTreeApp {
         }
     }
 
+    // add skill to list
     handleAddSkill(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -98,10 +111,12 @@ class SkillTreeApp {
         this.saveToStorage();
     }
 
+    // make new id
     generateId() {
         return this.nextId++;
     }
 
+    // mark milestone done or not
     toggleMilestone(skillId, milestoneId) {
         const skill = this.skills.find(s => s.id === skillId);
         if (!skill) return;
@@ -121,6 +136,7 @@ class SkillTreeApp {
         }
     }
 
+    // delete skill from list
     deleteSkill(skillId) {
         if (confirm('Are you sure you want to delete this skill?')) {
             const originalLength = this.skills.length;
@@ -134,6 +150,7 @@ class SkillTreeApp {
         }
     }
 
+    // show skill detail box
     openSkillDetail(skillId) {
         const skill = this.skills.find(s => s.id === skillId);
         if (!skill) return;
@@ -198,6 +215,7 @@ class SkillTreeApp {
         modal.classList.add('active');
     }
 
+    // get name for category
     getCategoryName(category) {
         const categories = {
             programming: 'Programming',
@@ -209,6 +227,7 @@ class SkillTreeApp {
         return categories[category] || 'Other';
     }
 
+    // get color for category
     getCategoryColor(category) {
         const colors = {
             programming: '#3b82f6',
@@ -220,6 +239,7 @@ class SkillTreeApp {
         return colors[category] || '#6b7280';
     }
 
+    // find skill positions in tree
     calculateTreePositions() {
         const positions = new Map();
         const nodeWidth = 250;
@@ -237,12 +257,14 @@ class SkillTreeApp {
         return positions;
     }
 
+    // show everything
     render() {
         this.renderStats();
         this.renderSkillsList();
         this.renderTree();
     }
 
+    // show stats
     renderStats() {
         const totalSkills = this.skills.length;
         const totalMilestones = this.skills.reduce((sum, skill) => sum + skill.milestones.length, 0);
@@ -257,6 +279,7 @@ class SkillTreeApp {
         document.getElementById('progressBar').style.width = `${progressPercentage}%`;
     }
 
+    // show skills list
     renderSkillsList() {
         const container = document.getElementById('skillsList');
         if (this.skills.length === 0) {
@@ -278,6 +301,7 @@ class SkillTreeApp {
         }).join('');
     }
 
+    // show skill tree
     renderTree() {
         const canvas = document.getElementById('treeCanvas');
         const emptyState = document.getElementById('emptyState');
@@ -347,6 +371,7 @@ class SkillTreeApp {
         canvas.style.transition = 'transform 0.5s ease';
     }
 
+    // draw lines between skills
     drawConnections(canvas, positions) {
         for (let i = 0; i < this.skills.length - 1; i++) {
             const currentSkill = this.skills[i];
@@ -369,6 +394,7 @@ class SkillTreeApp {
         }
     }
 
+    // save skills to browser
     saveToStorage() {
         const data = {
             skills: this.skills,
@@ -378,6 +404,7 @@ class SkillTreeApp {
         localStorage.setItem('skilltree-data', JSON.stringify(data));
     }
 
+    // load skills from browser
     loadFromStorage() {
         const data = localStorage.getItem('skilltree-data');
         if (data) {
@@ -391,6 +418,7 @@ class SkillTreeApp {
         }
     }
 
+    // save skills to file
     saveToFile() {
         const data = {
             skills: this.skills,
@@ -410,6 +438,7 @@ class SkillTreeApp {
         alert('SkillTree data saved successfully!');
     }
 
+    // load skills from file
     loadFromFile() {
         const input = document.createElement('input');
         input.type = 'file';
@@ -443,6 +472,7 @@ class SkillTreeApp {
     }
 }
 
+// pomodoro timer stuff
 let pomodoroInterval = null;
 let workTime = 25;
 let breakTime = 5;
@@ -450,6 +480,7 @@ let pomodoroSeconds = workTime * 60;
 let isWorkSession = true;
 let isPaused = false;
 
+// show timer
 function updatePomodoroDisplay() {
     const min = String(Math.floor(pomodoroSeconds / 60)).padStart(2, '0');
     const sec = String(pomodoroSeconds % 60).padStart(2, '0');
@@ -457,6 +488,7 @@ function updatePomodoroDisplay() {
     if (timerEl) timerEl.textContent = `${min}:${sec}`;
 }
 
+// start or pause timer
 function togglePomodoro() {
     const startBtn = document.getElementById('pomodoroStart');
     if (!pomodoroInterval) {
@@ -494,6 +526,7 @@ function togglePomodoro() {
     }
 }
 
+// reset timer
 function resetPomodoro() {
     clearInterval(pomodoroInterval);
     pomodoroInterval = null;
@@ -507,6 +540,7 @@ function resetPomodoro() {
     isPaused = false;
 }
 
+// set timer settings
 function applyPomodoroSettings() {
     workTime = Math.max(1, Math.min(60, Number(document.getElementById('workTimeInput').value)));
     breakTime = Math.max(1, Math.min(30, Number(document.getElementById('breakTimeInput').value)));
@@ -535,3 +569,6 @@ window.removeMilestone = (button) => app.removeMilestone(button);
 window.addMilestone = () => app.addMilestone();
 
 const app = new SkillTreeApp();
+
+if (app.skills.length === 0) {
+}

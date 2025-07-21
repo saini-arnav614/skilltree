@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkillTree - Interactive Learning Roadmap</title>
+    <!-- use orbitron font for timer -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <!-- use inter font for rest -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- font awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
+    <!-- main app box -->
     <div class="app-container">
+        <!-- top bar -->
         <header class="header">
             <div class="header-content">
                 <div class="logo">
@@ -30,8 +35,11 @@
                 </div>
             </div>
         </header>
+        <!-- main content -->
         <main class="main-content">
+            <!-- sidebar -->
             <aside class="sidebar">
+                <!-- pomodoro timer -->
                 <div class="pomodoro-top-bar">
                     <div class="pomodoro-timer-box">
                         <button class="pomodoro-settings-icon" id="pomodoroSettingsBtn" title="Settings">
@@ -44,6 +52,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- pomodoro settings -->
                 <div class="pomodoro-settings-box" id="pomodoroSettingsBox">
                     <h3>Pomodoro Settings</h3>
                     <div class="pomodoro-settings">
@@ -56,6 +65,7 @@
                         <button class="btn btn-outline" id="pomodoroApply">Apply</button>
                     </div>
                 </div>
+                <!-- progress overview -->
                 <div class="progress-overview">
                     <h3>Progress Overview</h3>
                     <div class="stats">
@@ -76,18 +86,21 @@
                         <div class="progress-fill" id="progressBar"></div>
                     </div>
                 </div>
+                <!-- skills overview -->
                 <div class="skill-list">
                     <h3>Skills Overview</h3>
                     <div id="skillsList" class="skills-container">
                     </div>
                 </div>
             </aside>
+            <!-- skill tree section -->
             <section class="tree-container">
                 <div class="tree-header">
                     <h2>Your Learning Journey</h2>
                     <p>Click on milestones to mark them complete, and watch your skill tree grow!</p>
                 </div>
                 <div class="tree-canvas" id="treeCanvas">
+                    <!-- empty state -->
                     <div class="empty-state" id="emptyState">
                         <div class="empty-icon">
                             <i class="fas fa-seedling"></i>
@@ -102,6 +115,7 @@
             </section>
         </main>
     </div>
+    <!-- add skill modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -152,6 +166,7 @@
             </div>
         </div>
     </div>
+    <!-- skill detail modal -->
     <div class="modal-overlay" id="skillDetailModal">
         <div class="modal modal-large">
             <div class="modal-header">
@@ -166,6 +181,7 @@
             </div>
         </div>
     </div>
+    <!-- main script -->
     <script src="script.js"></script>
 </body>
 </html>
